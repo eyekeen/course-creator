@@ -6,3 +6,5 @@ pip install requirements.txt
 
 widnows: .venv\Scripts\activate
 linux: .venv/bin/activate
+
+flask --app ./ run --debug
