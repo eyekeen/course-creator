@@ -13,7 +13,7 @@ class Test(SqlAlchemyBase):
     type_id = Column(Integer, nullable=True)
     user: Mapped["User"] = relationship(back_populates="tests")
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    questions: Mapped[list["Question"]] = relationship(back_populates="tests", secondary=TestsQuestions)
+    questions: Mapped[list["Question"]] = relationship(back_populates="tests", secondary=TestsQuestions, order_by="Question.id")
     groups: Mapped[list["Group"]] = relationship(back_populates="tests", secondary=GroupsTests)
     created_at = Column(DateTime,
                            nullable=True, default=datetime.datetime.now)

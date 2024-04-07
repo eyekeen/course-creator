@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Rating{% endblock %}
+{% block title %}Test maker{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -17,7 +17,7 @@
                 {% for test in my_tests %}
                 <tr>
                     <th scope="row">{{ test.id }}</th>
-                    <td>{{ test.title }}</td>
+                    <td><a href="{{ url_for('test_change', test_id=test.id) }}">{{ test.title }}</a></td>
                     <td><button class="btn btn-danger">Delete</button></td>
                 </tr>
                 {% endfor %}
@@ -73,7 +73,7 @@
         $.ajax({
             url: "/test/testmaker",
             type: "POST",
-            data: { title: newTest['title'], test_id: newTest['testType'] },
+            data: { title: newTest['title'], test_id: newTest['testType'], questionCount: newTest['testQuestionCount'] },
             success: function (response) {
                 console.log(response);
             },

@@ -9,6 +9,8 @@ from sqlalchemy import text
 from .models import db_session
 from .models.users import User
 from .models.tests import Test
+from .models.questions import Question
+from .models.testsquestions import TestsQuestions
 
 
 def create_app(test_config=None):
@@ -135,6 +137,12 @@ def create_app(test_config=None):
             
             sess.add(new_test)
 
+            for i in range(int(request.form['questionCount'])):
+                new_question = Question()
+
+                new_question.tests.append(new_test)
+
+                sess.add(new_question)
             sess.commit()
 
             return 'ok'
@@ -142,6 +150,17 @@ def create_app(test_config=None):
         myTests = sess.query(Test).filter_by(user_id = current_user.id).all()
         return render_template('test/testmaker.html', my_tests=myTests)
     
+
+    @app.route('/test/change/<int:test_id>')
+    @login_required
+    def test_change(test_id: int):
+        if request.method == 'POST':
+            return "ok"
+        myTest = sess.query(Test).filter_by(id = test_id).first()
+        questions = myTest.questions
+        print(questions)
+        return render_template('test/testchange.html', questions=questions, my_test=myTest)
+
     @app.route('/about')
     def about():
         return render_template('about.html')

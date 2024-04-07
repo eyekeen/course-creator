@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Test change{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header">
+            Test - {{ my_test.title }}
+        </div>
+    </div>
+    <div class="questions row row-cols-2 mt-3">
+        {% for q in questions %}
+        <div class="col border mb-2" 
+            id="q-col-{{ q.id }}" 
+            type-id="{{ my_test.type_id }}"
+            test-id="{{ my_test.id }}" 
+            q-id="{{ q.id }}">
+            <form class="question-form p-2 question-{{ q.id }}">
+                <div class="mb-3">
+                    <label for="question-name" class="form-label">Question id - {{ q.id }}</label>
+                    <input type="text" class="form-control" form-id="q-col-{{ q.id }} id="question-name" name="question-name"
+                        aria-describedby="question-name" value="{{ q.title }}">
+                </div>
+                <div class="mb-3">
+                    <label for="answer-count" class="form-label">Кол-во ответов</label>
+                    <input type="number" class="form-control" id="answer-count" name="answer-count">
+                </div>
+                <button type="submit" class="btn btn-primary add-answers" form-id="q-col-{{ q.id }}">Add answers</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+
+    let cardTypeOne = ``;
+
+    $(".question-form").on('submit', function (e) {
+        e.preventDefault();
+    })
+
+    $(".add-answers").on('click', function (e) {
+        let qCol = $('#' + $(this).attr('form-id'));
+        let answerCount = $("#answer-count").val();
+        for (let index = 1; index <= answerCount; index++) {
+            qCol.append(`
+            <form class="answer-form p-2 ">
+                <div class="mb-3">
+                    <label for="question-name" class="form-label">Answer name</label>
+                    <input type="text" class="form-control" id="answer-name" name="answer-name"
+                        aria-describedby="answer-name">
+                </div>
+                <select class="form-select" name="is-correct">
+                    <option selected>Is correct</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                </select>
+            </form>`);
+
+            if(index == answerCount){
+                qCol.append(`<button class="btn btn-primary m-2 save-question-answers">Save</button>`)
+            }
+        }
+    });
+
+    $('.save-question-answers').on('click', function(){
+        let answers = [];
+    });
+</script>
+{% endblock %}
