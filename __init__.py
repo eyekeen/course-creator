@@ -28,6 +28,10 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         return render_template('index.html')
+   
+    @app.route('/rating')
+    def rating():
+        return render_template('test/rating.html')
     
     @app.route('/about')
     def about():

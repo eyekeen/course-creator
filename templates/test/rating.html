@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Rating{% endblock %}
+
+{% block content %}
+<div class="container mt-5 table-responsive">
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Кто</th>
+                <th scope="col">№(кол-во пройденных тестов)</th>
+                <th scope="col">=(сумма баллов)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>250</td>
+                <td>3000</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>200</td>
+                <td>2500</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Jacob</td>
+                <td>150</td>
+                <td>2000</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
