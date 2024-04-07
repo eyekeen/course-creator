@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, redirect, url_for, session, g, flash
+from flask import Flask, render_template, request, redirect, url_for, session, g, flash, render_template_string
 
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 
@@ -66,13 +66,13 @@ def create_app(test_config=None):
         return render_template('auth/login.html')
 
     
-    @app.route("/protected")
-    @login_required
-    def protected():
-        return flask.render_template_string(
-            "Logged in as: {{ user.id }}",
-            user=current_user
-        )
+    # @app.route("/protected")
+    # @login_required
+    # def protected():
+    #     return render_template_string(
+    #         "Logged in as: {{ user.id }}",
+    #         user=current_user
+    #     )
 
     @app.route('/auth/register', methods=["GET", "POST"])
     def register():
@@ -97,8 +97,14 @@ def create_app(test_config=None):
         return redirect(url_for('login'))
 
     @app.route('/profile')
+    @login_required
     def profile():
         return render_template('user/profile.html')
+    
+    @app.route('/test/testmaker')
+    @login_required
+    def testmaker():
+        return render_template('test/testmaker.html')
     
     @app.route('/about')
     def about():
