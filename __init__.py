@@ -62,17 +62,10 @@ def create_app(test_config=None):
                 login_user(user, remember=True)
                 return redirect(url_for('index'))
             else:
-                flash('Invalid username or password')
+                return render_template_string(
+                    "Invalid username or password"
+                 )
         return render_template('auth/login.html')
-
-    
-    # @app.route("/protected")
-    # @login_required
-    # def protected():
-    #     return render_template_string(
-    #         "Logged in as: {{ user.id }}",
-    #         user=current_user
-    #     )
 
     @app.route('/auth/register', methods=["GET", "POST"])
     def register():
@@ -96,11 +89,38 @@ def create_app(test_config=None):
         logout_user()
         return redirect(url_for('login'))
 
-    @app.route('/profile')
+    @app.route('/profile', methods=["GET", "POST"])
     @login_required
     def profile():
+        if request.method == 'POST':
+            user = sess.query(User).filter_by(id = current_user.id).first()
+            if request.form['surname']:
+                user.surname = request.form['surname']
+            if request.form['name']:
+                user.name = request.form['name']
+            if request.form['email']:
+                user.email = request.form['email']
+            if request.form['age']:
+                user.age = request.form['age']
+            
+            sess.commit()
+
+            return 'ok'
         return render_template('user/profile.html')
     
+
+    @app.route('/profile/updatepassword', methods=["POST"])
+    @login_required
+    def updatepassword():
+        user = sess.query(User).filter_by(id = current_user.id).first()
+
+        user.set_password(request.form['new_password'])
+            
+        sess.commit()
+
+        return 'ok'
+
+
     @app.route('/test/testmaker')
     @login_required
     def testmaker():

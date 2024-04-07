@@ -78,8 +78,8 @@
                     </svg>
                     <input id="file-upload" type="file" style="display: none;">
                 </label>
-                <span class="font-weight-bold">Edogaru</span>
-                <span class="text-black-50">edogaru@mail.com</span><span>
+                <span class="font-weight-bold"> {{ current_user.surname }} {{ current_user.name }} </span>
+                <span class="text-black-50">{{ current_user.email }}</span><span>
                 </span>
             </div>
         </div>
@@ -90,25 +90,29 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-6"><label class="labels">Name</label>
-                        <input type="text" class="form-control" placeholder="first name" value="John">
+                        <input type="text" class="form-control" placeholder="first name" id="name" name="name"
+                            value="{{ current_user.name }}">
                     </div>
-                    <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control"
-                            value="Smith" placeholder="surname"></div>
+                    <div class="col-md-6"><label class="labels">Surname</label>
+                        <input type="text" class="form-control" value="{{ current_user.surname }}" id="surname"
+                            name="surname" placeholder="surname">
+                    </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control"
-                            placeholder="enter email" value="john@mail.com"></div>
+                            placeholder="enter email" name="email" id="email" value="{{ current_user.email }}"></div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6"><label class="labels">Age</label>
-                        <input type="number" class="form-control" placeholder="Age" value="16">
+                        <input type="number" class="form-control" name="age" id="age" placeholder="Age"
+                            value="{{ current_user.age }}">
                     </div>
                 </div>
                 <div class="mt-5 text-center">
-                    <button class="btn btn-primary profile-button edit-profile-button" type="button">
+                    <button class="btn btn-primary profile-button edit-profile-button" type="submit">
                         Edit Profile
                     </button>
-                    <button class="btn btn-danger profile-button set-password-button" type="button"
+                    <button class="btn btn-danger profile-button" type="button"
                         data-bs-toggle="modal" data-bs-target="#set-password-modal">
                         Set password
                     </button>
@@ -125,18 +129,11 @@
                                 <div class="modal-body">
                                     <form>
                                         <div class="mb-3">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="password" class="form-control" id="password" required>
-                                            <div class="invalid-feedback">
-                                                Enter new password
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="repeat-password" class="form-label">Repeat password</label>
-                                            <input type="password" class="form-control invalid" id="repeat-password"
+                                            <label for="password" class="form-label">New password</label>
+                                            <input type="password" class="form-control" id="password" name="password"
                                                 required>
                                             <div class="invalid-feedback">
-                                                Repeat password
+                                                Enter new password
                                             </div>
                                         </div>
                                     </form>
@@ -144,7 +141,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-primary set-password-button">Update password</button>
                                 </div>
                             </div>
                         </div>
@@ -172,4 +169,41 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(".edit-profile-button").on('click', function () {
+        let surname = $('#surname').val();
+        let name = $('#name').val();
+        let email = $('#email').val();
+        let age = $('#age').val();
+        $.ajax({
+            url: "/profile",
+            type: "POST",
+            data: { surname, name, email, age },
+            success: function (response) {
+                location.reload()
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error: " + textStatus + ", " + errorThrown);
+            }
+        });
+    });
+
+    $(".set-password-button").on('click', function () {
+        let new_password = $('#password').val();
+
+        $.ajax({
+            url: "/profile/updatepassword",
+            type: "POST",
+            data: { new_password, },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error: " + textStatus + ", " + errorThrown);
+            }
+        });
+    });
+</script>
+
 {% endblock %}
