@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, render_template
 
+from .models import db_session
 
 def create_app(test_config=None):
     # create and configure the app
@@ -24,6 +25,10 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+
+    db_session.global_init("db/testing.db")
+    sess = db_session.create_session()
+    
 
     @app.route('/')
     def index():
