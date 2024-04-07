@@ -33,6 +33,11 @@ def create_app(test_config=None):
     def rating():
         return render_template('test/rating.html')
     
+    
+    @app.route('/profile')
+    def profile():
+        return render_template('user/profile.html')
+    
     @app.route('/about')
     def about():
         return render_template('about.html')

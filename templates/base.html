@@ -30,19 +30,19 @@
         </a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="{{ url_for('index') }}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('rating') }}">Rating</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
+            <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">TestMaker</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="{{ url_for('about') }}">About</a>
           </li>
         </ul>
       </div>
