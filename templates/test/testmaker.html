@@ -2,5 +2,89 @@
 {% block title %}Rating{% endblock %}
 
 {% block content %}
-<h1>test maker</h1>
+<div class="container">
+    <h2>My tests</h2>
+    <div class="container mt-5 table-responsive">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Test name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in my_tests %}
+                <tr>
+                    <th scope="row">{{ test.id }}</th>
+                    <td>{{ test.title }}</td>
+                    <td><button class="btn btn-danger">Delete</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <h2>Add test</h2>
+    <form class="test-create-form">
+        <div class="mb-3">
+            <label for="test-name" class="form-label">Test name</label>
+            <input type="text" class="form-control" id="test-name" name="test-name" aria-describedby="test-name">
+        </div>
+        <div class="mb-3">
+            <label for="test-desc" class="form-label">Test description</label>
+            <textarea class="form-control" id="test-desc" name="test-desc" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="test-desc" class="form-label">Test type</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="test-type" id="radio-alt" checked
+                    aria-checked="true">
+                <label class="form-check-label" for="test-type">
+                    Альтернативный
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="test-type" id="radio-ev">
+                <label class="form-check-label" for="test-type">
+                    Оценочный
+                </label>
+            </div>
+            <div class="mb-3">
+                <label for="question-count" class="form-label">Кол-во вопросов</label>
+                <input type="number" class="form-control" id="question-count" name="question-count">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+
+
+<script>
+    $(".test-create-form").on('submit', function (e) {
+        e.preventDefault()
+        let newTest = {
+            title: $("#test-name").val(),
+            desc: $("#test-desc").val(),
+            testType: $("#radio-alt").prop('checked') ? 1 : 2,
+            testQuestionCount: $("#question-count").val(),
+        }
+
+        $.ajax({
+            url: "/test/testmaker",
+            type: "POST",
+            data: { title: newTest['title'], test_id: newTest['testType'] },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error: " + textStatus + ", " + errorThrown);
+            }
+        });
+
+        // for (let index = 1; index <= newTest['testQuestionCount']; index++) {
+        //     console.log(index);
+        // }
+    })
+</script>
 {% endblock %}

@@ -8,6 +8,7 @@ from sqlalchemy import text
 
 from .models import db_session
 from .models.users import User
+from .models.tests import Test
 
 
 def create_app(test_config=None):
@@ -121,10 +122,25 @@ def create_app(test_config=None):
         return 'ok'
 
 
-    @app.route('/test/testmaker')
+    @app.route('/test/testmaker', methods=["GET", "POST"])
     @login_required
     def testmaker():
-        return render_template('test/testmaker.html')
+        if request.method == 'POST':
+            # user = sess.query(User).filter_by(id = current_user.id).first()
+            new_test = Test()
+
+            new_test.title = request.form['title']
+            new_test.type_id = request.form['test_id']
+            new_test.user_id = current_user.id
+            
+            sess.add(new_test)
+
+            sess.commit()
+
+            return 'ok'
+
+        myTests = sess.query(Test).filter_by(user_id = current_user.id).all()
+        return render_template('test/testmaker.html', my_tests=myTests)
     
     @app.route('/about')
     def about():
