@@ -3,9 +3,9 @@ from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 import datetime
 from sqlalchemy.orm import relationship, Mapped
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_login import UserMixin
 
-
-class User(SqlAlchemyBase):
+class User(UserMixin, SqlAlchemyBase):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
     surname = Column(String, nullable=True)

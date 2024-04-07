@@ -51,8 +51,13 @@
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         </form>
+        {% if current_user.is_authenticated %}
+        <p class="text-white m-2">{{ current_user.surname }}!</p>
+        <a class="btn btn-danger m-2" href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
         <a class="btn btn-outline-light m-2" href="{{ url_for('login') }}">Log in</a>
         <a class="btn btn-warning" href="{{ url_for('register') }}">Register</a>
+        {% endif %}
       </div>
     </div>
   </nav>
