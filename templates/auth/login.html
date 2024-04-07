@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <form class="row g-3 needs-validation" novalidate">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div class="form-text text-center mt-4 text-dark">
+        Not Registered?
+        <a href="{{ url_for('register') }}" class="text-dark fw-bold"> Create an Account</a>
+    </div>
+    {% endblock %}
